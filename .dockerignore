@@ -1,0 +1,14 @@
+.env
+.env.production
+.git
+.gitignore
+.dockerignore
+__pycache__
+*.pyc
+venv/
+test.db
+.pytest_cache
+.coverage
+README.md
+docker-compose*.yml
+.github/
