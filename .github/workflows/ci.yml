@@ -46,3 +46,4 @@ jobs:
         run: pytest app/tests/ -v
         env:
           DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+# verified
