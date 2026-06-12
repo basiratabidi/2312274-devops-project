@@ -3,7 +3,7 @@
 > **Student:** Basirat Zehra — 2312274
 > **Course:** DevOps Fundamentals — SZABIST
 > **Instructor:** Afaq Ahmed
-> **Live URL:** http://YOUR_EC2_IP:8000
+> **Live URL:** http://54.227.74.215:8000
 
 ## Architecture
 GitHub Push
