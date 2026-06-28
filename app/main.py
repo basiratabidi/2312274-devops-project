@@ -1,5 +1,7 @@
 from contextlib import asynccontextmanager
+import subprocess
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from . import models, database
 from .database import engine
@@ -13,6 +15,37 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="DevOps Project", version="1.0.0", lifespan=lifespan)
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],          # tighten to your domain in production
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+)
+
+
+
+@app.get("/logs")
+def get_logs():
+    """Return the last 50 lines from the container's stdout log."""
+    try:
+        result = subprocess.run(
+            ["tail", "-n", "50", "/proc/1/fd/1"],
+            capture_output=True, text=True, timeout=3
+        )
+        lines = result.stdout.strip().splitlines()
+    except Exception:
+        lines = ["Log access unavailable — check container permissions."]
+
+    return JSONResponse({
+        "logs": [
+            {"ts": "", "level": "INFO", "msg": line}
+            for line in lines
+        ]
+    })
 
 
 class StudentCreate(BaseModel):
