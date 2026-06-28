@@ -1,11 +1,12 @@
-from contextlib import asynccontextmanager
 import subprocess
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 from . import models, database
 from .database import engine
-from pydantic import BaseModel
 
 
 @asynccontextmanager
@@ -16,36 +17,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="DevOps Project", version="1.0.0", lifespan=lifespan)
 
-from fastapi.middleware.cors import CORSMiddleware
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],          # tighten to your domain in production
+    allow_origins=["*"],
     allow_credentials=False,
     allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "Authorization"],
 )
-
-
-
-@app.get("/logs")
-def get_logs():
-    """Return the last 50 lines from the container's stdout log."""
-    try:
-        result = subprocess.run(
-            ["tail", "-n", "50", "/proc/1/fd/1"],
-            capture_output=True, text=True, timeout=3
-        )
-        lines = result.stdout.strip().splitlines()
-    except Exception:
-        lines = ["Log access unavailable — check container permissions."]
-
-    return JSONResponse({
-        "logs": [
-            {"ts": "", "level": "INFO", "msg": line}
-            for line in lines
-        ]
-    })
 
 
 class StudentCreate(BaseModel):
@@ -76,11 +54,22 @@ def health(db: Session = Depends(get_db)):
         db_status = "connected"
     except Exception:
         db_status = "disconnected"
-    return {
-        "status": "ok",
-        "db": db_status,
-        "student": "2312274",
-    }
+    return {"status": "ok", "db": db_status, "student": "2312274"}
+
+
+@app.get("/logs")
+def get_logs():
+    try:
+        result = subprocess.run(
+            ["tail", "-n", "50", "/proc/1/fd/1"],
+            capture_output=True, text=True, timeout=3
+        )
+        lines = result.stdout.strip().splitlines()
+    except Exception:
+        lines = ["Log access unavailable — check container permissions."]
+    return JSONResponse({
+        "logs": [{"ts": "", "level": "INFO", "msg": line} for line in lines]
+    })
 
 
 @app.post("/students", response_model=StudentResponse, status_code=201)
