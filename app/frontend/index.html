@@ -1,276 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DevOps Dashboard · 2312274</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>DevOps Dashboard · 2312274</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0c10;--bg2:#0f1117;--bg3:#141720;--bg4:#1c2030;--bg5:#242840;
+  --border:#ffffff0f;--border2:#ffffff18;--border3:#ffffff28;
+  --t1:#e8edf5;--t2:#8892a4;--t3:#4a5568;
+  --green:#00d4a0;--green2:rgba(0,212,160,0.12);--green3:rgba(0,212,160,0.05);
+  --blue:#4d9fff;--blue2:rgba(77,159,255,0.12);
+  --amber:#f5a623;--amber2:rgba(245,166,35,0.12);
+  --red:#ff5c5c;--red2:rgba(255,92,92,0.12);
+  --purple:#8b5cf6;--purple2:rgba(139,92,246,0.12);
+  --r:8px;--rl:12px;
+  --font:'Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+html,body{height:100%;background:var(--bg);color:var(--t1);font-family:var(--font);font-size:14px;overflow:hidden}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg5);border-radius:2px}
 
-    :root {
-      --bg:        #0d0f14;
-      --bg-2:      #13161e;
-      --bg-3:      #1a1e28;
-      --bg-4:      #222736;
-      --border:    rgba(255,255,255,0.07);
-      --border-2:  rgba(255,255,255,0.12);
-      --text-1:    #e8eaf0;
-      --text-2:    #8b90a0;
-      --text-3:    #555b6e;
-      --green:     #1D9E75;
-      --green-dim: rgba(29,158,117,0.15);
-      --green-hi:  #5ecba1;
-      --blue:      #378ADD;
-      --blue-dim:  rgba(55,138,221,0.15);
-      --amber:     #EF9F27;
-      --amber-dim: rgba(239,159,39,0.12);
-      --red:       #E24B4A;
-      --red-dim:   rgba(226,75,74,0.12);
-      --radius-sm: 6px;
-      --radius:    10px;
-      --radius-lg: 14px;
-      --font:      'Inter', system-ui, sans-serif;
-      --mono:      'JetBrains Mono', monospace;
-    }
+.shell{display:flex;height:100vh}
+.sidebar{width:220px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:56px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:14px;flex-shrink:0}
+.content{flex:1;overflow-y:auto;padding:22px;background:var(--bg)}
 
-    html, body { height: 100%; background: var(--bg); color: var(--text-1); font-family: var(--font); font-size: 14px; line-height: 1.6; }
+/* sidebar */
+.sb-logo{padding:18px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.sb-mark{width:32px;height:32px;border-radius:var(--r);background:var(--green);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#000;font-family:var(--mono)}
+.sb-name{font-size:15px;font-weight:600}
+.sb-reg{font-size:10px;color:var(--t3);margin-top:1px}
+.sb-sect{font-size:10px;font-weight:600;color:var(--t3);letter-spacing:.1em;text-transform:uppercase;padding:14px 20px 5px}
+.nav{padding:0 10px;flex:1;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r);cursor:pointer;font-size:13px;color:var(--t2);margin-bottom:2px;transition:all .2s;border:1px solid transparent;position:relative;user-select:none}
+.nav-item svg{width:15px;height:15px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-item:hover{background:var(--bg3);color:var(--t1)}
+.nav-item.active{background:var(--green2);color:var(--green);border-color:rgba(0,212,160,0.18)}
+.nav-item.active::before{content:'';position:absolute;left:-10px;top:50%;transform:translateY(-50%);width:3px;height:18px;background:var(--green);border-radius:0 3px 3px 0}
+.nav-badge{margin-left:auto;background:var(--bg4);color:var(--t2);font-size:10px;padding:1px 7px;border-radius:10px;font-family:var(--mono)}
+.sb-footer{padding:14px 16px;border-top:1px solid var(--border)}
+.sb-user{display:flex;align-items:center;gap:10px}
+.sb-avatar{width:32px;height:32px;border-radius:50%;background:var(--green2);border:1px solid rgba(0,212,160,0.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--green);flex-shrink:0}
+.sb-uname{font-size:13px;font-weight:500}
+.sb-ureg{font-size:11px;color:var(--t3)}
 
-    /* ── Layout ── */
-    .shell { display: flex; height: 100vh; overflow: hidden; }
+/* topbar */
+.tb-title{font-size:15px;font-weight:600}
+.tb-spacer{flex:1}
+.health-chip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:var(--green2);border:1px solid rgba(0,212,160,0.25);font-size:12px;color:var(--green);font-weight:500;white-space:nowrap}
+.health-chip.offline{background:var(--red2);border-color:rgba(255,92,92,0.25);color:var(--red)}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 2s ease infinite}
+.offline .pulse{background:var(--red)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.tb-clock{font-family:var(--mono);font-size:12px;color:var(--t3);min-width:80px;text-align:right}
+.tb-search{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:6px 12px;width:190px}
+.tb-search svg{width:13px;height:13px;stroke:var(--t3);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.tb-search input{background:none;border:none;outline:none;font-size:12px;color:var(--t1);width:100%;font-family:var(--font)}
+.tb-search input::placeholder{color:var(--t3)}
 
-    /* ── Topbar ── */
-    .topbar {
-      position: fixed; top: 0; left: 0; right: 0; height: 52px; z-index: 100;
-      background: var(--bg-2); border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; padding: 0 20px; gap: 16px;
-    }
-    .topbar-logo { display: flex; align-items: center; gap: 8px; }
-    .logo-mark {
-      width: 28px; height: 28px; border-radius: 8px;
-      background: var(--green); display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 600; color: #fff; font-family: var(--mono);
-    }
-    .logo-name { font-size: 14px; font-weight: 600; color: var(--text-1); }
-    .logo-reg  { font-size: 11px; color: var(--text-3); margin-left: 2px; }
-    .topbar-spacer { flex: 1; }
-    .health-chip {
-      display: flex; align-items: center; gap: 6px;
-      padding: 4px 10px; border-radius: 20px;
-      background: var(--green-dim); border: 1px solid rgba(29,158,117,0.3);
-      font-size: 11px; color: var(--green-hi);
-    }
-    .health-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s ease infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-    .topbar-clock { font-family: var(--mono); font-size: 12px; color: var(--text-3); min-width: 70px; text-align: right; }
+/* metrics */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.metric{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:16px 18px;position:relative;overflow:hidden;cursor:default;transition:border-color .2s,transform .25s}
+.metric:hover{border-color:var(--border3);transform:translateY(-2px)}
+.metric::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.metric.g::before{background:var(--green)}
+.metric.b::before{background:var(--blue)}
+.metric.a::before{background:var(--amber)}
+.metric.p::before{background:var(--purple)}
+.m-icon{width:34px;height:34px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.m-icon svg{width:16px;height:16px;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.m-icon.g{background:var(--green2)} .m-icon.g svg{stroke:var(--green)}
+.m-icon.b{background:var(--blue2)}  .m-icon.b svg{stroke:var(--blue)}
+.m-icon.a{background:var(--amber2)} .m-icon.a svg{stroke:var(--amber)}
+.m-icon.p{background:var(--purple2)}.m-icon.p svg{stroke:var(--purple)}
+.m-lbl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;font-weight:600}
+.m-val{font-size:26px;font-weight:700;font-family:var(--mono);line-height:1}
+.m-val.g{color:var(--green)} .m-val.b{color:var(--blue)} .m-val.a{color:var(--amber)} .m-val.p{color:var(--purple)}
+.m-sub{font-size:11px;color:var(--t3);margin-top:5px}
+.m-badge{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:600;margin-right:4px}
+.m-badge.up{background:var(--green2);color:var(--green)}
 
-    /* ── Sidebar ── */
-    .sidebar {
-      width: 210px; flex-shrink: 0; margin-top: 52px;
-      background: var(--bg-2); border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; padding: 16px 10px;
-      overflow-y: auto;
-    }
-    .nav-section { font-size: 10px; font-weight: 600; color: var(--text-3); letter-spacing: .08em; text-transform: uppercase; padding: 10px 10px 4px; }
-    .nav-item {
-      display: flex; align-items: center; gap: 9px;
-      padding: 8px 10px; border-radius: var(--radius-sm);
-      cursor: pointer; font-size: 13px; color: var(--text-2);
-      transition: background .15s, color .15s; margin-bottom: 1px;
-      border: 1px solid transparent;
-    }
-    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .nav-item:hover { background: var(--bg-3); color: var(--text-1); }
-    .nav-item.active { background: var(--green-dim); color: var(--green-hi); border-color: rgba(29,158,117,0.2); }
-    .nav-badge { margin-left: auto; background: var(--bg-4); color: var(--text-2); font-size: 10px; padding: 1px 6px; border-radius: 10px; font-family: var(--mono); }
+/* cards */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);margin-bottom:14px;overflow:hidden}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+.card-title{font-size:13px;font-weight:600;display:flex;align-items:center;gap:7px}
+.card-title svg{width:14px;height:14px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.card-sub{font-size:11px;color:var(--t3);margin-top:1px;font-family:var(--mono)}
+.card-body{padding:18px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
-    /* ── Main ── */
-    .main { flex: 1; margin-top: 52px; overflow-y: auto; padding: 24px; background: var(--bg); }
+/* badges */
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.bg{background:var(--green2);color:var(--green);border:1px solid rgba(0,212,160,0.2)}
+.bb{background:var(--blue2);color:var(--blue);border:1px solid rgba(77,159,255,0.2)}
+.ba{background:var(--amber2);color:var(--amber);border:1px solid rgba(245,166,35,0.2)}
+.br{background:var(--red2);color:var(--red);border:1px solid rgba(255,92,92,0.2)}
+.bp{background:var(--purple2);color:var(--purple);border:1px solid rgba(139,92,246,0.2)}
+.bgr{background:var(--bg4);color:var(--t2);border:1px solid var(--border2)}
 
-    /* ── Cards ── */
-    .card { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 16px; }
-    .card-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); }
-    .card-title { font-size: 13px; font-weight: 600; color: var(--text-1); }
-    .card-sub { font-size: 11px; color: var(--text-3); margin-top: 1px; }
-    .card-body { padding: 18px; }
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--t1);transition:all .15s;font-family:var(--font)}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn:hover{background:var(--bg4);border-color:var(--border3)}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--green);border-color:var(--green);color:#000;font-weight:600}
+.btn-primary:hover{background:#00b88a;border-color:#00b88a}
+.btn-danger{border-color:rgba(255,92,92,0.3);color:var(--red)}
+.btn-danger:hover{background:var(--red2)}
+.btn-sm{padding:5px 10px;font-size:11px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-    /* ── Metrics ── */
-    .metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 20px; }
-    .metric { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
-    .metric-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-    .metric-val { font-size: 26px; font-weight: 600; font-family: var(--mono); color: var(--text-1); }
-    .metric-val.green { color: var(--green-hi); }
-    .metric-sub { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+/* forms */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.fgrp{display:flex;flex-direction:column;gap:4px}
+.flbl{font-size:11px;color:var(--t2);font-weight:500}
+.finp{padding:9px 11px;border-radius:var(--r);border:1px solid var(--border2);background:var(--bg3);color:var(--t1);font-size:13px;font-family:var(--font);transition:border-color .15s,box-shadow .15s;outline:none}
+.finp:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,212,160,0.1)}
+.finp::placeholder{color:var(--t3)}
+select.finp{appearance:none;cursor:pointer}
+textarea.finp{resize:vertical;font-family:var(--mono);font-size:12px}
 
-    /* ── Badges ── */
-    .badge { display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
-    .badge-green  { background: var(--green-dim); color: var(--green-hi); }
-    .badge-blue   { background: var(--blue-dim);  color: #7ab8f5; }
-    .badge-amber  { background: var(--amber-dim); color: var(--amber); }
-    .badge-red    { background: var(--red-dim);   color: #f08080; }
-    .badge-gray   { background: var(--bg-4); color: var(--text-2); }
+/* alerts */
+.alert{padding:10px 14px;border-radius:var(--r);font-size:12px;margin-bottom:12px;display:none;border-left:3px solid;animation:slideIn .2s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+.alert-success{background:var(--green2);color:var(--green);border-left-color:var(--green)}
+.alert-error{background:var(--red2);color:var(--red);border-left-color:var(--red)}
 
-    /* ── Buttons ── */
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 14px; border-radius: var(--radius-sm);
-      font-size: 12px; font-weight: 500; cursor: pointer;
-      border: 1px solid var(--border-2); background: var(--bg-3);
-      color: var(--text-1); transition: background .15s, border-color .15s;
-      font-family: var(--font);
-    }
-    .btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .btn:hover { background: var(--bg-4); border-color: var(--border-2); }
-    .btn-primary { background: var(--green); border-color: var(--green); color: #fff; }
-    .btn-primary:hover { background: #0F6E56; border-color: #0F6E56; }
-    .btn-danger { border-color: rgba(226,75,74,0.3); color: #f08080; }
-    .btn-danger:hover { background: var(--red-dim); }
-    .btn-sm { padding: 5px 10px; font-size: 11px; }
+/* table */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 14px;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid var(--border);transition:background .15s}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--bg3)}
+tbody tr{animation:fadeUp .25s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+code{font-family:var(--mono);font-size:11px;color:var(--green);background:var(--green2);padding:2px 6px;border-radius:4px}
 
-    /* ── Forms ── */
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-    .form-group { display: flex; flex-direction: column; gap: 5px; }
-    .form-label { font-size: 11px; color: var(--text-2); font-weight: 500; }
-    .form-input {
-      padding: 8px 11px; border-radius: var(--radius-sm);
-      border: 1px solid var(--border-2); background: var(--bg-3);
-      color: var(--text-1); font-size: 13px; font-family: var(--font);
-      transition: border-color .15s, box-shadow .15s; outline: none;
-    }
-    .form-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(29,158,117,0.15); }
-    select.form-input { appearance: none; cursor: pointer; }
-    textarea.form-input { resize: vertical; font-family: var(--mono); font-size: 12px; }
+/* pipeline */
+.pipe{display:flex;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin-bottom:12px}
+.ps{flex:1;padding:13px 6px;text-align:center;border-right:1px solid var(--border);transition:background .2s}
+.ps:last-child{border-right:none}
+.ps.pass{background:rgba(0,212,160,0.04)}
+.ps:hover{background:var(--bg3)}
+.pi{font-size:18px;display:block;margin-bottom:3px;line-height:1}
+.pi.pass{color:var(--green)} .pi.fail{color:var(--red)} .pi.run{color:var(--amber);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pn{font-size:10px;color:var(--t2);display:block;margin-bottom:1px}
+.pt{font-size:10px;color:var(--t3);font-family:var(--mono)}
 
-    /* ── Alerts ── */
-    .alert { padding: 9px 14px; border-radius: var(--radius-sm); font-size: 12px; margin-bottom: 14px; display: none; border-left: 3px solid; }
-    .alert-success { background: var(--green-dim); color: var(--green-hi); border-left-color: var(--green); }
-    .alert-error   { background: var(--red-dim); color: #f08080; border-left-color: var(--red); }
+/* api */
+.ep-row{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;font-size:13px}
+.ep-row:hover{background:var(--bg3)}
+.ep-row:last-child{border-bottom:none}
+.ep-row.sel{background:var(--bg3);border-left:2px solid var(--green)}
+.mth{display:inline-block;width:44px;text-align:center;padding:3px 0;border-radius:4px;font-size:10px;font-weight:700;font-family:var(--mono)}
+.mg{background:var(--green2);color:var(--green)}
+.mp{background:var(--blue2);color:var(--blue)}
+.md{background:var(--red2);color:var(--red)}
+.ep-path{font-family:var(--mono);font-size:12px}
+.ep-desc{margin-left:auto;font-size:11px;color:var(--t3)}
+.resp{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:14px;font-family:var(--mono);font-size:12px;color:var(--t2);min-height:80px;max-height:200px;overflow-y:auto;white-space:pre-wrap;line-height:1.7;margin-top:10px}
+.resp.ok{color:var(--green)} .resp.err{color:var(--red)}
 
-    /* ── Table ── */
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th { text-align: left; padding: 9px 14px; font-size: 10px; font-weight: 600; color: var(--text-3); text-transform: uppercase; letter-spacing: .07em; border-bottom: 1px solid var(--border); }
-    td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text-1); }
-    tbody tr:last-child td { border-bottom: none; }
-    tbody tr:hover td { background: var(--bg-3); }
-    code { font-family: var(--mono); font-size: 12px; color: var(--green-hi); background: var(--green-dim); padding: 1px 6px; border-radius: 4px; }
+/* docker */
+.ctr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+.ctr:last-child{border-bottom:none}
+.cdot{width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:10px;flex-shrink:0;animation:pulse 3s ease infinite}
 
-    /* ── Search bar ── */
-    .search-wrap { position: relative; }
-    .search-wrap svg { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 13px; height: 13px; stroke: var(--text-3); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
-    .search-inp { padding-left: 28px !important; width: 200px; }
+/* logs */
+.log-box{background:var(--bg);border-radius:var(--r);border:1px solid var(--border);padding:14px 16px;font-family:var(--mono);font-size:12px;line-height:1.9;max-height:380px;overflow-y:auto}
+.log-ts{color:var(--t3);margin-right:8px;user-select:none}
+.lok{color:var(--green)} .lwarn{color:var(--amber)} .lerr{color:var(--red)} .linfo{color:var(--blue)}
+.log-line{animation:fadeUp .15s ease both}
 
-    /* ── Tabs ── */
-    .tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
-    .tab { padding: 8px 16px; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text-3); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .15s; }
-    .tab:hover { color: var(--text-2); }
-    .tab.active { color: var(--green-hi); border-bottom-color: var(--green); }
+/* code */
+.codeblk{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;font-family:var(--mono);font-size:12px;color:var(--t2);line-height:1.9}
+.kw{color:var(--purple)} .str{color:var(--amber)} .cmt{color:var(--t3)}
 
-    /* ── API Explorer ── */
-    .endpoint-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px; border-bottom: 1px solid var(--border);
-      cursor: pointer; transition: background .12s; font-size: 13px;
-    }
-    .endpoint-row:hover { background: var(--bg-3); }
-    .endpoint-row:last-child { border-bottom: none; }
-    .endpoint-row.selected { background: var(--bg-3); }
-    .method-tag { display: inline-block; width: 46px; text-align: center; padding: 2px 0; border-radius: 4px; font-size: 10px; font-weight: 700; font-family: var(--mono); letter-spacing: .02em; }
-    .m-get    { background: var(--green-dim); color: var(--green-hi); }
-    .m-post   { background: var(--blue-dim);  color: #7ab8f5; }
-    .m-delete { background: var(--red-dim);   color: #f08080; }
-    .ep-path  { font-family: var(--mono); font-size: 12px; }
-    .ep-desc  { margin-left: auto; font-size: 11px; color: var(--text-3); }
-    .resp-box {
-      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
-      padding: 12px 14px; font-family: var(--mono); font-size: 12px;
-      color: var(--text-2); min-height: 70px; max-height: 180px; overflow-y: auto;
-      white-space: pre-wrap; line-height: 1.6; margin-top: 10px;
-    }
-    .resp-ok  { color: var(--green-hi); }
-    .resp-err { color: #f08080; }
+/* tabs */
+.tab-bar{display:flex;border-bottom:1px solid var(--border);padding:0 18px}
+.tab{padding:10px 14px;font-size:12px;font-weight:500;cursor:pointer;color:var(--t3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s}
+.tab:hover{color:var(--t2)}
+.tab.active{color:var(--green);border-bottom-color:var(--green)}
 
-    /* ── Pipeline ── */
-    .pipe-track { display: flex; gap: 0; overflow: hidden; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 16px; }
-    .pipe-step { flex: 1; padding: 12px 8px; text-align: center; border-right: 1px solid var(--border); position: relative; }
-    .pipe-step:last-child { border-right: none; }
-    .pipe-step.pass { background: rgba(29,158,117,0.06); }
-    .pipe-step.fail { background: var(--red-dim); }
-    .pipe-step.run  { background: rgba(239,159,39,0.06); }
-    .pipe-ico { font-size: 18px; margin-bottom: 4px; }
-    .pipe-ico.pass { color: var(--green-hi); }
-    .pipe-ico.fail { color: var(--red); }
-    .pipe-ico.run  { color: var(--amber); animation: spin 1s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .pipe-name { font-size: 11px; color: var(--text-2); display: block; }
-    .pipe-time { font-size: 10px; color: var(--text-3); font-family: var(--mono); }
+/* spinner */
+.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
 
-    /* ── Docker ── */
-    .container-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border); }
-    .container-row:last-child { border-bottom: none; }
-    .cname { font-family: var(--mono); font-size: 13px; color: var(--text-1); }
-    .cinfo { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+/* activity */
+.act-item{display:flex;align-items:flex-start;gap:10px;padding:11px 18px;border-bottom:1px solid var(--border);animation:fadeUp .2s ease both}
+.act-item:last-child{border-bottom:none}
+.act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.act-msg{font-size:12px;color:var(--t2);line-height:1.5}
+.act-time{font-size:10px;color:var(--t3);margin-top:2px;font-family:var(--mono)}
 
-    /* ── Logs ── */
-    .log-box { background: var(--bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 14px 16px; font-family: var(--mono); font-size: 12px; line-height: 1.9; max-height: 380px; overflow-y: auto; }
-    .log-ts  { color: var(--text-3); margin-right: 8px; }
-    .log-ok   { color: var(--green-hi); }
-    .log-warn { color: var(--amber); }
-    .log-err  { color: #f08080; }
-    .log-info { color: var(--blue); }
+/* empty */
+.empty{text-align:center;padding:36px;color:var(--t3);font-size:13px}
+.empty svg{width:32px;height:32px;stroke:var(--t3);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin:0 auto 10px;display:block;opacity:.4}
 
-    /* ── Scrollbar ── */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
-
-    /* ── Spinner ── */
-    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--border-2); border-top-color: var(--green); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; }
-
-    /* ── Mono code block ── */
-    .code-block { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-family: var(--mono); font-size: 12px; color: var(--text-2); line-height: 1.8; }
-
-    /* ── Empty state ── */
-    .empty { text-align: center; padding: 36px; color: var(--text-3); font-size: 13px; }
-    .empty svg { width: 32px; height: 32px; stroke: var(--text-3); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; margin: 0 auto 10px; display: block; }
-  </style>
+.page{animation:fadeUp .25s ease both}
+</style>
 </head>
 <body>
-
-<!-- Topbar -->
-<div class="topbar">
-  <div class="topbar-logo">
-    <div class="logo-mark">D</div>
-    <span class="logo-name">DevOps Dashboard</span>
-    <span class="logo-reg">· 2312274</span>
-  </div>
-  <div class="topbar-spacer"></div>
-  <div class="health-chip" id="health-chip">
-    <div class="dot"></div>
-    <span id="health-text">Checking…</span>
-  </div>
-  <div class="topbar-clock" id="clock"></div>
-</div>
-
 <div class="shell">
-  <!-- Sidebar -->
-  <nav class="sidebar">
-    <div class="nav-section">Manage</div>
+
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mark">D</div>
+    <div>
+      <div class="sb-name">DevOps</div>
+      <div class="sb-reg">Dashboard · 2312274</div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="sb-sect">Overview</div>
     <div class="nav-item active" onclick="showPage('students',this)">
       <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      Students
-      <span class="nav-badge" id="nb-students">—</span>
+      Students <span class="nav-badge" id="nb">—</span>
     </div>
     <div class="nav-item" onclick="showPage('api',this)">
       <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-      API explorer
+      API Explorer
     </div>
-
-    <div class="nav-section">DevOps</div>
+    <div class="sb-sect">Infrastructure</div>
     <div class="nav-item" onclick="showPage('pipeline',this)">
       <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-      CI/CD pipeline
+      CI/CD Pipeline
     </div>
     <div class="nav-item" onclick="showPage('docker',this)">
       <svg viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="14" rx="2"/><path d="M6 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
@@ -280,641 +241,414 @@
       <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
       Logs
     </div>
-  </nav>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-user">
+      <div class="sb-avatar">BT</div>
+      <div>
+        <div class="sb-uname">Basira Tabidi</div>
+        <div class="sb-ureg">reg · 2312274</div>
+      </div>
+    </div>
+  </div>
+</nav>
 
-  <!-- Main -->
-  <main class="main">
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title" id="tb-title">Students</div>
+    <div class="tb-spacer"></div>
+    <div class="tb-search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input id="gsearch" placeholder="Search students…" oninput="filterTable()"/>
+    </div>
+    <div class="health-chip" id="hchip"><div class="pulse"></div><span id="htxt">Connecting…</span></div>
+    <div class="tb-clock" id="clock"></div>
+  </div>
 
-    <!-- ═══ STUDENTS ═══ -->
-    <div id="page-students">
+  <div class="content" id="content">
+
+    <!-- STUDENTS -->
+    <div id="page-students" class="page">
       <div class="metrics">
-        <div class="metric"><div class="metric-label">Total students</div><div class="metric-val green" id="m-total">—</div><div class="metric-sub">in database</div></div>
-        <div class="metric"><div class="metric-label">Active semesters</div><div class="metric-val" id="m-sems">—</div><div class="metric-sub">distinct values</div></div>
-        <div class="metric"><div class="metric-label">Sections</div><div class="metric-val" id="m-secs">—</div><div class="metric-sub">A / B / C</div></div>
-        <div class="metric"><div class="metric-label">API status</div><div class="metric-val green" id="m-status" style="font-size:15px;padding-top:6px">—</div><div class="metric-sub">FastAPI backend</div></div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <div><div class="card-title">Add student</div><div class="card-sub">POST /students</div></div>
+        <div class="metric g">
+          <div class="m-icon g"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="m-lbl">Total Students</div>
+          <div class="m-val g" id="m-total">—</div>
+          <div class="m-sub"><span class="m-badge up">live</span>in database</div>
         </div>
-        <div class="card-body">
-          <div id="add-alert" class="alert"></div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Registration number</label>
-              <input class="form-input" id="f-reg" placeholder="e.g. 2312274" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Full name</label>
-              <input class="form-input" id="f-name" placeholder="Basira Tabidi" />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Semester</label>
-              <select class="form-input" id="f-sem">
-                <option value="">Select</option>
-                <option>1</option><option>2</option><option>3</option>
-                <option>4</option><option>5</option><option>6</option>
-                <option>7</option><option>8</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Section</label>
-              <select class="form-input" id="f-sec">
-                <option value="">Select</option>
-                <option>A</option><option>B</option><option>C</option>
-              </select>
-            </div>
-          </div>
-          <button class="btn btn-primary" id="add-btn" onclick="addStudent()">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Add student
-          </button>
+        <div class="metric b">
+          <div class="m-icon b"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <div class="m-lbl">Semesters Active</div>
+          <div class="m-val b" id="m-sems">—</div>
+          <div class="m-sub">distinct values</div>
+        </div>
+        <div class="metric a">
+          <div class="m-icon a"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div class="m-lbl">Sections</div>
+          <div class="m-val a" id="m-secs">—</div>
+          <div class="m-sub">A · B · C</div>
+        </div>
+        <div class="metric p">
+          <div class="m-icon p"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+          <div class="m-lbl">API Status</div>
+          <div class="m-val p" id="m-status" style="font-size:15px;padding-top:5px">—</div>
+          <div class="m-sub">FastAPI · port 8000</div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-head">
-          <div><div class="card-title">Student records</div><div class="card-sub">GET /students</div></div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <div class="search-wrap">
-              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input class="form-input search-inp" id="search-inp" placeholder="Search…" oninput="filterTable()" />
+      <div class="grid2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Student
+              </div>
+              <div class="card-sub">POST /students</div>
             </div>
-            <button class="btn btn-sm" id="refresh-btn" onclick="loadStudents()">
-              <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-              Refresh
+          </div>
+          <div class="card-body">
+            <div id="add-alert" class="alert"></div>
+            <div class="fg">
+              <div class="fgrp"><label class="flbl">Registration no.</label><input class="finp" id="f-reg" placeholder="e.g. 2312274"/></div>
+              <div class="fgrp"><label class="flbl">Full name</label><input class="finp" id="f-name" placeholder="Basira Tabidi"/></div>
+            </div>
+            <div class="fg">
+              <div class="fgrp">
+                <label class="flbl">Semester</label>
+                <select class="finp" id="f-sem"><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select>
+              </div>
+              <div class="fgrp">
+                <label class="flbl">Section</label>
+                <select class="finp" id="f-sec"><option value="">Select</option><option>A</option><option>B</option><option>C</option></select>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="add-btn" onclick="addStudent()">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Student
             </button>
           </div>
         </div>
-        <div class="table-wrap">
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">
+                <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                Recent Activity
+              </div>
+              <div class="card-sub">live feed</div>
+            </div>
+          </div>
+          <div id="act-feed">
+            <div class="act-item"><div class="act-dot" style="background:var(--t3)"></div><div><div class="act-msg" style="color:var(--t3)">Activity will appear here as you use the dashboard.</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Student Records
+            </div>
+            <div class="card-sub">GET /students</div>
+          </div>
+          <button class="btn btn-sm" id="ref-btn" onclick="loadStudents()">
+            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Refresh
+          </button>
+        </div>
+        <div class="tw">
           <table>
-            <thead><tr><th>Reg no</th><th>Name</th><th>Semester</th><th>Section</th><th>Action</th></tr></thead>
-            <tbody id="student-tbody">
-              <tr><td colspan="5"><div class="empty"><div class="spinner"></div><p style="margin-top:10px">Loading students…</p></div></td></tr>
-            </tbody>
+            <thead><tr><th>#</th><th>Reg No.</th><th>Name</th><th>Semester</th><th>Section</th><th>Action</th></tr></thead>
+            <tbody id="tbody"><tr><td colspan="6"><div class="empty"><div class="spin" style="margin:0 auto 10px"></div><p>Loading students…</p></div></td></tr></tbody>
           </table>
         </div>
       </div>
     </div>
 
-    <!-- ═══ API EXPLORER ═══ -->
-    <div id="page-api" style="display:none">
+    <!-- API -->
+    <div id="page-api" style="display:none" class="page">
       <div class="card">
         <div class="card-head">
           <div>
-            <div class="card-title">API explorer</div>
-            <div class="card-sub">Base URL: <span id="api-base-display" style="font-family:var(--mono);color:var(--green-hi)"></span></div>
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              API Explorer
+            </div>
+            <div class="card-sub" id="api-lbl">Base: http://YOUR_EC2_IP:8000</div>
           </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input class="form-input" id="api-base-inp" placeholder="http://YOUR_EC2_IP:8000" style="width:240px;font-family:var(--mono);font-size:12px" oninput="updateBase()" />
-          </div>
+          <input class="finp" id="api-base" placeholder="http://34.228.41.14:8000" style="width:230px;font-family:var(--mono);font-size:12px" oninput="saveBase()"/>
         </div>
-
-        <div style="padding:0 18px">
-          <div class="tab-bar">
-            <div class="tab active" onclick="switchApiTab('try',this)">Try it</div>
-            <div class="tab" onclick="switchApiTab('schema',this)">Schema</div>
-          </div>
+        <div class="tab-bar">
+          <div class="tab active" onclick="switchTab('try',this)">Try it</div>
+          <div class="tab" onclick="switchTab('schema',this)">Schema</div>
         </div>
-
         <div id="api-try">
-          <div id="ep-list">
-            <div class="endpoint-row" onclick="selectEp('GET','/health','','Health check')">
-              <span class="method-tag m-get">GET</span>
-              <span class="ep-path">/health</span>
-              <span class="ep-desc">Health check — confirms student ID</span>
-            </div>
-            <div class="endpoint-row" onclick="selectEp('GET','/students','','List all students')">
-              <span class="method-tag m-get">GET</span>
-              <span class="ep-path">/students</span>
-              <span class="ep-desc">Fetch all student records</span>
-            </div>
-            <div class="endpoint-row" onclick="selectEp('GET','/students/{reg_no}','','Get student by reg no')">
-              <span class="method-tag m-get">GET</span>
-              <span class="ep-path">/students/{reg_no}</span>
-              <span class="ep-desc">Look up one student</span>
-            </div>
-            <div class="endpoint-row" onclick="selectEp('POST','/students','{&quot;reg_no&quot;:&quot;2312274&quot;,&quot;name&quot;:&quot;Basira Tabidi&quot;,&quot;semester&quot;:6,&quot;section&quot;:&quot;A&quot;}','Create student')">
-              <span class="method-tag m-post">POST</span>
-              <span class="ep-path">/students</span>
-              <span class="ep-desc">Create a new student record</span>
-            </div>
-            <div class="endpoint-row" onclick="selectEp('DELETE','/students/{reg_no}','','Delete student')">
-              <span class="method-tag m-delete">DEL</span>
-              <span class="ep-path">/students/{reg_no}</span>
-              <span class="ep-desc">Remove a student record</span>
-            </div>
-            <div class="endpoint-row" onclick="selectEp('GET','/docs','','Swagger UI')">
-              <span class="method-tag m-get">GET</span>
-              <span class="ep-path">/docs</span>
-              <span class="ep-desc">FastAPI auto-generated Swagger UI</span>
-            </div>
-          </div>
-
-          <div id="ep-detail" style="display:none;padding:14px 18px;border-top:1px solid var(--border)">
+          <div class="ep-row" onclick="selEp('GET','/health','')"><span class="mth mg">GET</span><span class="ep-path">/health</span><span class="ep-desc">Health check</span></div>
+          <div class="ep-row" onclick="selEp('GET','/students','')"><span class="mth mg">GET</span><span class="ep-path">/students</span><span class="ep-desc">List all students</span></div>
+          <div class="ep-row" onclick="selEp('GET','/students/{reg_no}','')"><span class="mth mg">GET</span><span class="ep-path">/students/{reg_no}</span><span class="ep-desc">Get one student</span></div>
+          <div class="ep-row" onclick="selEp('POST','/students','{&quot;reg_no&quot;:&quot;2312274&quot;,&quot;name&quot;:&quot;Basira Tabidi&quot;,&quot;semester&quot;:6,&quot;section&quot;:&quot;A&quot;}')"><span class="mth mp">POST</span><span class="ep-path">/students</span><span class="ep-desc">Create student</span></div>
+          <div class="ep-row" onclick="selEp('DELETE','/students/{reg_no}','')"><span class="mth md">DEL</span><span class="ep-path">/students/{reg_no}</span><span class="ep-desc">Delete student</span></div>
+          <div class="ep-row" onclick="window.open(base()+'/docs','_blank')"><span class="mth mg">GET</span><span class="ep-path">/docs</span><span class="ep-desc">Swagger UI ↗</span></div>
+          <div id="ep-det" style="display:none;padding:14px 18px;border-top:1px solid var(--border);background:var(--bg3)">
             <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">
-              <span class="method-tag" id="ep-badge"></span>
-              <input class="form-input" id="ep-url-field" style="flex:1;font-family:var(--mono);font-size:12px" />
+              <span class="mth" id="ep-bdg"></span>
+              <input class="finp" id="ep-url" style="flex:1;font-family:var(--mono);font-size:12px"/>
               <button class="btn btn-primary btn-sm" id="run-btn" onclick="runEp()">
-                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Send
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>Send
               </button>
               <button class="btn btn-sm" onclick="closeEp()">
                 <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
               </button>
             </div>
-            <div id="ep-body-wrap" style="display:none;margin-bottom:10px">
-              <div class="form-label" style="margin-bottom:5px">Request body (JSON)</div>
-              <textarea class="form-input" id="ep-body" rows="4" style="width:100%"></textarea>
+            <div id="ep-bw" style="display:none;margin-bottom:10px">
+              <div class="flbl" style="margin-bottom:5px">Request body (JSON)</div>
+              <textarea class="finp" id="ep-body" rows="4" style="width:100%"></textarea>
             </div>
-            <div style="font-size:11px;color:var(--text-3);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between">
-              <span>Response</span>
-              <span id="resp-meta"></span>
-            </div>
-            <div class="resp-box" id="ep-resp">Select an endpoint above and click Send.</div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:4px"><span>Response</span><span id="rmeta"></span></div>
+            <div class="resp" id="ep-resp">Select an endpoint and click Send.</div>
           </div>
         </div>
-
-        <div id="api-schema" style="display:none;padding:14px 18px">
-          <div style="font-size:12px;color:var(--text-3);margin-bottom:12px">PostgreSQL table: <code>students</code> · FastAPI Pydantic model</div>
+        <div id="api-schema" style="display:none;padding:18px">
+          <div style="font-size:12px;color:var(--t3);margin-bottom:12px">PostgreSQL table: <code>students</code></div>
           <table>
-            <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Constraint</th></tr></thead>
+            <thead><tr><th>Field</th><th>Type</th><th>Required</th><th>Notes</th></tr></thead>
             <tbody>
-              <tr><td><code>reg_no</code></td><td><span class="badge badge-blue">VARCHAR</span></td><td><span class="badge badge-green">Yes</span></td><td>Primary key, unique</td></tr>
-              <tr><td><code>name</code></td><td><span class="badge badge-blue">VARCHAR</span></td><td><span class="badge badge-green">Yes</span></td><td>Not null</td></tr>
-              <tr><td><code>semester</code></td><td><span class="badge badge-amber">INTEGER</span></td><td><span class="badge badge-green">Yes</span></td><td>1 – 8</td></tr>
-              <tr><td><code>section</code></td><td><span class="badge badge-blue">VARCHAR</span></td><td><span class="badge badge-green">Yes</span></td><td>A / B / C</td></tr>
+              <tr><td><code>reg_no</code></td><td><span class="badge bg">VARCHAR</span></td><td><span class="badge bb">Yes</span></td><td>Primary key</td></tr>
+              <tr><td><code>name</code></td><td><span class="badge bg">VARCHAR</span></td><td><span class="badge bb">Yes</span></td><td>Full name</td></tr>
+              <tr><td><code>semester</code></td><td><span class="badge ba">INTEGER</span></td><td><span class="badge bb">Yes</span></td><td>1 – 8</td></tr>
+              <tr><td><code>section</code></td><td><span class="badge bg">VARCHAR</span></td><td><span class="badge bb">Yes</span></td><td>A / B / C</td></tr>
             </tbody>
           </table>
-          <div style="margin-top:16px;font-size:12px;color:var(--text-3);margin-bottom:8px">Example responses</div>
-          <div class="code-block">GET /students/2312274
-{
-  "reg_no": "2312274",
-  "name": "Basira Tabidi",
-  "semester": 6,
-  "section": "A"
-}
-
-POST /students → 201 Created
-DELETE /students/2312274 → 200 {"deleted": true}
-GET /health → {"student": "2312274"}</div>
         </div>
       </div>
     </div>
 
-    <!-- ═══ PIPELINE ═══ -->
-    <div id="page-pipeline" style="display:none">
+    <!-- PIPELINE -->
+    <div id="page-pipeline" style="display:none" class="page">
       <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
-        <div class="metric"><div class="metric-label">Last CI run</div><div class="metric-val green" style="font-size:16px;padding-top:4px">✓ Passed</div><div class="metric-sub">~120s total</div></div>
-        <div class="metric"><div class="metric-label">Last CD run</div><div class="metric-val green" style="font-size:16px;padding-top:4px">✓ Deployed</div><div class="metric-sub">SSH → EC2</div></div>
-        <div class="metric"><div class="metric-label">Trigger branch</div><div class="metric-val" style="font-size:15px;padding-top:6px;font-family:var(--mono)">main</div><div class="metric-sub">push → deploy</div></div>
+        <div class="metric g"><div class="m-lbl">Last CI Run</div><div class="m-val g" style="font-size:16px;padding-top:4px">✓ Passed</div><div class="m-sub">~120s total</div></div>
+        <div class="metric b"><div class="m-lbl">Last CD Deploy</div><div class="m-val b" style="font-size:16px;padding-top:4px">✓ Live</div><div class="m-sub">SSH → EC2 → Docker</div></div>
+        <div class="metric a"><div class="m-lbl">Trigger Branch</div><div class="m-val a" style="font-size:16px;padding-top:4px;font-family:var(--mono)">main</div><div class="m-sub">push → auto deploy</div></div>
       </div>
-
       <div class="card">
-        <div class="card-head"><div class="card-title">CI pipeline — GitHub Actions</div><span class="badge badge-green">All green</span></div>
+        <div class="card-head"><div class="card-title">CI Pipeline — GitHub Actions</div><span class="badge bg">All green ✓</span></div>
         <div class="card-body" style="padding:12px">
-          <div class="pipe-track">
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">Checkout</span><span class="pipe-time">2s</span></div>
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">Python setup</span><span class="pipe-time">18s</span></div>
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">Install deps</span><span class="pipe-time">12s</span></div>
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">Lint (flake8)</span><span class="pipe-time">5s</span></div>
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">Tests</span><span class="pipe-time">9s</span></div>
+          <div class="pipe">
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">Checkout</span><span class="pt">2s</span></div>
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">Python 3.12</span><span class="pt">18s</span></div>
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">Install deps</span><span class="pt">12s</span></div>
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">Lint</span><span class="pt">5s</span></div>
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">Tests</span><span class="pt">9s</span></div>
           </div>
-          <div class="pipe-track" style="margin-bottom:0">
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">Docker build</span><span class="pipe-time">54s</span></div>
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">Push image</span><span class="pipe-time">30s</span></div>
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">SSH → EC2</span><span class="pipe-time">15s</span></div>
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">docker compose up</span><span class="pipe-time">23s</span></div>
-            <div class="pipe-step pass"><div class="pipe-ico pass">✓</div><span class="pipe-name">Health check</span><span class="pipe-time">3s</span></div>
+          <div class="pipe" style="margin-bottom:0">
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">Docker build</span><span class="pt">54s</span></div>
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">Push image</span><span class="pt">30s</span></div>
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">SSH → EC2</span><span class="pt">15s</span></div>
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">compose up</span><span class="pt">23s</span></div>
+            <div class="ps pass"><span class="pi pass">✓</span><span class="pn">Health check</span><span class="pt">3s</span></div>
           </div>
         </div>
       </div>
-
       <div class="card">
-        <div class="card-head"><div class="card-title">Trigger a deployment</div></div>
+        <div class="card-head"><div class="card-title">Trigger Deployment</div></div>
         <div class="card-body">
-          <p style="font-size:13px;color:var(--text-2);margin-bottom:12px">Push an empty commit to <code>main</code> to kick off CI → CD automatically via GitHub Actions.</p>
-          <div class="code-block">git commit --allow-empty -m "deploy: $(date +%Y-%m-%dT%H:%M)"
+          <p style="font-size:13px;color:var(--t2);margin-bottom:12px">Push an empty commit to <code>main</code> — GitHub Actions runs CI then CD automatically.</p>
+          <div class="codeblk"><span class="cmt"># run locally in your project folder</span>
+git commit --allow-empty -m <span class="str">"deploy: $(date +%Y-%m-%dT%H:%M)"</span>
 git push origin main</div>
-          <div style="margin-top:12px;font-size:12px;color:var(--text-3)">Make sure <code>EC2_HOST</code> and <code>EC2_SSH_KEY</code> are set in GitHub → Settings → Secrets → Actions.</div>
+          <p style="font-size:11px;color:var(--t3);margin-top:10px">Ensure <code>EC2_HOST</code> and <code>EC2_SSH_KEY</code> are set in GitHub → Settings → Secrets → Actions</p>
         </div>
       </div>
     </div>
 
-    <!-- ═══ DOCKER ═══ -->
-    <div id="page-docker" style="display:none">
-      <div class="card">
-        <div class="card-head"><div class="card-title">Running containers</div><span class="badge badge-green">2 healthy</span></div>
-        <div class="container-row">
-          <div>
-            <div class="cname">devops-project-web-1</div>
-            <div class="cinfo">FastAPI · Uvicorn · port 8000 → 8000</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="badge badge-green">healthy</span>
-            <span style="font-family:var(--mono);font-size:11px;color:var(--text-3)">python:3.11-slim</span>
-          </div>
+    <!-- DOCKER -->
+    <div id="page-docker" style="display:none" class="page">
+      <div class="metrics" style="grid-template-columns:1fr 1fr">
+        <div class="metric g">
+          <div class="m-lbl">Web Container</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:8px"><div class="cdot"></div><div class="m-val g" style="font-size:15px">healthy</div></div>
+          <div class="m-sub">FastAPI · Uvicorn · :8000</div>
         </div>
-        <div class="container-row">
-          <div>
-            <div class="cname">devops-project-db-1</div>
-            <div class="cinfo">PostgreSQL 15 · port 5432 (internal)</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="badge badge-green">healthy</span>
-            <span style="font-family:var(--mono);font-size:11px;color:var(--text-3)">postgres:15-alpine</span>
-          </div>
+        <div class="metric b">
+          <div class="m-lbl">DB Container</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:8px"><div class="cdot" style="background:var(--blue)"></div><div class="m-val b" style="font-size:15px">healthy</div></div>
+          <div class="m-sub">PostgreSQL 15 · :5432</div>
         </div>
       </div>
-
       <div class="card">
-        <div class="card-head"><div class="card-title">Quick commands — run on EC2</div></div>
-        <div class="card-body" style="display:flex;flex-direction:column;gap:8px">
-          <div>
-            <div class="form-label" style="margin-bottom:4px">Check status</div>
-            <div class="code-block">docker compose -f docker-compose.prod.yml ps</div>
-          </div>
-          <div>
-            <div class="form-label" style="margin-bottom:4px">Tail web logs</div>
-            <div class="code-block">docker compose -f docker-compose.prod.yml logs web --tail=50 -f</div>
-          </div>
-          <div>
-            <div class="form-label" style="margin-bottom:4px">Rebuild and restart</div>
-            <div class="code-block">docker compose -f docker-compose.prod.yml up -d --build</div>
-          </div>
-          <div>
-            <div class="form-label" style="margin-bottom:4px">Restart web only</div>
-            <div class="code-block">docker compose -f docker-compose.prod.yml restart web</div>
-          </div>
-          <div>
-            <div class="form-label" style="margin-bottom:4px">Open psql shell</div>
-            <div class="code-block">docker compose -f docker-compose.prod.yml exec db psql -U devops_user -d devops_db</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head"><div class="card-title">docker-compose.prod.yml overview</div></div>
-        <div class="card-body">
-          <div class="code-block">services:
-  web:
-    build: .
-    ports: ["8000:8000"]
-    env_file: .env
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
-    image: postgres:15-alpine
-    env_file: .env
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL","pg_isready -U $DB_USER -d $DB_NAME"]
-      interval: 10s
-
-volumes:
-  pgdata:</div>
+        <div class="card-head"><div class="card-title">Quick Commands — run on EC2</div></div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+          <div><div class="flbl" style="margin-bottom:5px">Check container status</div><div class="codeblk">docker compose -f docker-compose.prod.yml ps</div></div>
+          <div><div class="flbl" style="margin-bottom:5px">Tail web logs</div><div class="codeblk">docker compose -f docker-compose.prod.yml logs web --tail=50 -f</div></div>
+          <div><div class="flbl" style="margin-bottom:5px">Rebuild and restart</div><div class="codeblk">docker compose -f docker-compose.prod.yml up -d --build</div></div>
+          <div><div class="flbl" style="margin-bottom:5px">Open PostgreSQL shell</div><div class="codeblk">docker compose -f docker-compose.prod.yml exec db psql -U devops_user -d devops_db</div></div>
         </div>
       </div>
     </div>
 
-    <!-- ═══ LOGS ═══ -->
-    <div id="page-logs" style="display:none">
+    <!-- LOGS -->
+    <div id="page-logs" style="display:none" class="page">
       <div class="card">
         <div class="card-head">
-          <div><div class="card-title">Application logs</div><div class="card-sub">Live from FastAPI · Uvicorn</div></div>
-          <button class="btn btn-sm" id="log-refresh-btn" onclick="refreshLogs()">
+          <div>
+            <div class="card-title">
+              <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              Application Logs
+            </div>
+            <div class="card-sub">Uvicorn · FastAPI · access log</div>
+          </div>
+          <button class="btn btn-sm" id="log-btn" onclick="refreshLogs()">
             <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
             Refresh
           </button>
         </div>
         <div class="card-body">
-          <div class="log-box" id="log-box">
-            <div style="color:var(--text-3)">Click Refresh to load logs from your API…</div>
-          </div>
-          <div style="margin-top:10px;font-size:11px;color:var(--text-3)">
-            Live logs are fetched from <code>GET /logs</code> if available, otherwise simulated. To stream real logs, SSH into EC2 and run: <code>docker compose -f docker-compose.prod.yml logs web -f</code>
-          </div>
+          <div class="log-box" id="log-box"><div style="color:var(--t3)">Click Refresh to load logs…</div></div>
         </div>
       </div>
     </div>
 
-  </main>
+  </div>
+</div>
 </div>
 
 <script>
-  // ── Config ──────────────────────────────────────────────────────
-  const BASE_KEY = 'devops_api_base';
-  let API_BASE = localStorage.getItem(BASE_KEY) || '';
+const BK='dv_base';
+let API_BASE=localStorage.getItem(BK)||'';
+let allStudents=[],acts=[];
+function base(){return API_BASE||window.location.origin}
+function saveBase(){API_BASE=document.getElementById('api-base').value.trim().replace(/\/$/,'');localStorage.setItem(BK,API_BASE);document.getElementById('api-lbl').textContent='Base: '+base();}
 
-  function getBase() { return API_BASE || window.location.origin; }
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+tick();setInterval(tick,1000);
 
-  function updateBase() {
-    API_BASE = document.getElementById('api-base-inp').value.trim().replace(/\/$/, '');
-    localStorage.setItem(BASE_KEY, API_BASE);
-    document.getElementById('api-base-display').textContent = getBase();
+async function checkHealth(){
+  const chip=document.getElementById('hchip'),txt=document.getElementById('htxt'),mst=document.getElementById('m-status');
+  try{
+    const r=await fetch(base()+'/health',{signal:AbortSignal.timeout(4000)});
+    if(r.ok){const d=await r.json();txt.textContent='API online · '+(d.student||'ok');chip.className='health-chip';mst.textContent='● Online';mst.style.color='var(--green)';}
+    else throw 0;
+  }catch{txt.textContent='API unreachable';chip.className='health-chip offline';mst.textContent='● Offline';mst.style.color='var(--red)';}
+}
+checkHealth();setInterval(checkHealth,15000);
+
+const pTitles={students:'Students',api:'API Explorer',pipeline:'CI/CD Pipeline',docker:'Docker',logs:'Logs'};
+function showPage(n,el){
+  ['students','api','pipeline','docker','logs'].forEach(p=>document.getElementById('page-'+p).style.display=p===n?'block':'none');
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tb-title').textContent=pTitles[n]||n;
+  if(n==='students')loadStudents();
+  if(n==='api'){document.getElementById('api-base').value=API_BASE;document.getElementById('api-lbl').textContent='Base: '+base();}
+  if(n==='logs')refreshLogs();
+}
+
+function pushAct(msg,color){
+  acts.unshift({msg,color,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'})});
+  if(acts.length>8)acts.pop();
+  document.getElementById('act-feed').innerHTML=acts.map(a=>`<div class="act-item"><div class="act-dot" style="background:${a.color}"></div><div><div class="act-msg">${a.msg}</div><div class="act-time">${a.time}</div></div></div>`).join('');
+}
+
+async function loadStudents(){
+  const btn=document.getElementById('ref-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span> Loading';
+  try{
+    const r=await fetch(base()+'/students',{signal:AbortSignal.timeout(6000)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    allStudents=await r.json();renderTable(allStudents);updateM();
+    pushAct('Fetched '+allStudents.length+' student records','var(--green)');
+  }catch(e){
+    document.getElementById('tbody').innerHTML='<tr><td colspan="6"><div class="empty"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Cannot reach API.<br><small>Set your EC2 IP in the API Explorer tab.</small></p></div></td></tr>';
+    pushAct('API unreachable','var(--red)');
   }
+  btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Refresh';
+}
 
-  // ── Clock ────────────────────────────────────────────────────────
-  function tickClock() {
-    document.getElementById('clock').textContent =
-      new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  }
-  tickClock();
-  setInterval(tickClock, 1000);
+function updateM(){
+  document.getElementById('m-total').textContent=allStudents.length;
+  document.getElementById('nb').textContent=allStudents.length;
+  document.getElementById('m-sems').textContent=new Set(allStudents.map(s=>s.semester)).size;
+  document.getElementById('m-secs').textContent=new Set(allStudents.map(s=>s.section)).size;
+}
 
-  // ── Health check ─────────────────────────────────────────────────
-  async function checkHealth() {
-    const chip = document.getElementById('health-chip');
-    const txt  = document.getElementById('health-text');
-    try {
-      const r = await fetch(getBase() + '/health', { signal: AbortSignal.timeout(4000) });
-      if (r.ok) {
-        const d = await r.json();
-        txt.textContent = 'API healthy · ' + (d.student || 'ok');
-        chip.style.background = 'rgba(29,158,117,0.15)';
-        chip.style.borderColor = 'rgba(29,158,117,0.3)';
-        chip.querySelector('.dot').style.background = '#1D9E75';
-        document.getElementById('m-status').textContent = '● Online';
-      } else {
-        throw new Error(r.status);
-      }
-    } catch {
-      txt.textContent = 'API unreachable';
-      chip.style.background = 'rgba(226,75,74,0.12)';
-      chip.style.borderColor = 'rgba(226,75,74,0.3)';
-      chip.querySelector('.dot').style.background = '#E24B4A';
-      txt.style.color = '#f08080';
-      document.getElementById('m-status').textContent = '● Offline';
-      document.getElementById('m-status').style.color = '#f08080';
-    }
-  }
-  checkHealth();
-  setInterval(checkHealth, 15000);
+function renderTable(data){
+  const sc={A:'bb',B:'ba',C:'bp'};
+  if(!data.length){document.getElementById('tbody').innerHTML='<tr><td colspan="6"><div class="empty"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><p>No students found</p></div></td></tr>';return;}
+  document.getElementById('tbody').innerHTML=data.map((s,i)=>`<tr style="animation-delay:${i*0.03}s"><td style="color:var(--t3);font-family:var(--mono);font-size:11px">${String(i+1).padStart(2,'0')}</td><td><code>${s.reg_no}</code></td><td style="font-weight:500">${s.name}</td><td><span class="badge bgr">Sem ${s.semester}</span></td><td><span class="badge ${sc[s.section]||'bgr'}">${s.section}</span></td><td><button class="btn btn-sm btn-danger" onclick="delStu('${s.reg_no}','${s.name}')"><svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/></svg>Delete</button></td></tr>`).join('');
+}
 
-  // ── Nav ──────────────────────────────────────────────────────────
-  function showPage(name, el) {
-    ['students','api','pipeline','docker','logs'].forEach(p => {
-      document.getElementById('page-' + p).style.display = p === name ? 'block' : 'none';
-    });
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    el.classList.add('active');
-    if (name === 'students') loadStudents();
-    if (name === 'api') {
-      document.getElementById('api-base-inp').value = API_BASE;
-      document.getElementById('api-base-display').textContent = getBase();
-    }
-    if (name === 'logs') refreshLogs();
-  }
+function filterTable(){const q=document.getElementById('gsearch').value.toLowerCase();renderTable(allStudents.filter(s=>s.name.toLowerCase().includes(q)||s.reg_no.toLowerCase().includes(q)));}
 
-  // ── Students ─────────────────────────────────────────────────────
-  let allStudents = [];
+function showAlert(id,msg,type){const el=document.getElementById(id);el.textContent=msg;el.className='alert alert-'+type;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
 
-  async function loadStudents() {
-    const btn = document.getElementById('refresh-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Loading';
-    try {
-      const r = await fetch(getBase() + '/students', { signal: AbortSignal.timeout(6000) });
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      allStudents = await r.json();
-      renderTable(allStudents);
-      updateMetrics();
-    } catch (e) {
-      document.getElementById('student-tbody').innerHTML =
-        '<tr><td colspan="5"><div class="empty"><p>Could not reach API.<br><small style="color:var(--text-3)">Set your EC2 IP in the API explorer tab, or check if the server is running.</small></p></div></td></tr>';
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Refresh';
-    }
-  }
+async function addStudent(){
+  const reg=document.getElementById('f-reg').value.trim(),name=document.getElementById('f-name').value.trim(),sem=parseInt(document.getElementById('f-sem').value),sec=document.getElementById('f-sec').value;
+  if(!reg||!name||!sem||!sec){showAlert('add-alert','All fields are required.','error');return;}
+  const btn=document.getElementById('add-btn');btn.disabled=true;btn.innerHTML='<span class="spin"></span> Saving…';
+  try{
+    const r=await fetch(base()+'/students',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reg_no:reg,name,semester:sem,section:sec}),signal:AbortSignal.timeout(6000)});
+    if(r.status===201||r.ok){showAlert('add-alert',`"${name}" added.`,'success');document.getElementById('f-reg').value='';document.getElementById('f-name').value='';document.getElementById('f-sem').value='';document.getElementById('f-sec').value='';pushAct(`Added: ${name} (${reg})`,'var(--green)');loadStudents();}
+    else{const d=await r.json().catch(()=>({}));showAlert('add-alert',d.detail||'Error '+r.status,'error');pushAct(`Failed to add ${name}`,'var(--red)');}
+  }catch{showAlert('add-alert','Cannot reach API.','error');}
+  btn.disabled=false;btn.innerHTML='<svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add Student';
+}
 
-  function updateMetrics() {
-    document.getElementById('m-total').textContent = allStudents.length;
-    document.getElementById('nb-students').textContent = allStudents.length;
-    document.getElementById('m-sems').textContent = new Set(allStudents.map(s => s.semester)).size;
-    document.getElementById('m-secs').textContent = new Set(allStudents.map(s => s.section)).size;
-  }
+async function delStu(reg,name){
+  if(!confirm(`Delete "${name}" (${reg})?`))return;
+  try{const r=await fetch(base()+'/students/'+reg,{method:'DELETE',signal:AbortSignal.timeout(6000)});if(r.ok){pushAct(`Deleted: ${name}`,'var(--amber)');loadStudents();}else alert('Delete failed: '+r.status);}
+  catch{alert('Cannot reach API.');}
+}
 
-  function renderTable(data) {
-    const secColor = { A: 'badge-blue', B: 'badge-amber', C: 'badge-green' };
-    if (!data.length) {
-      document.getElementById('student-tbody').innerHTML =
-        '<tr><td colspan="5"><div class="empty"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><p>No students found</p></div></td></tr>';
-      return;
-    }
-    document.getElementById('student-tbody').innerHTML = data.map(s => `
-      <tr>
-        <td><code>${s.reg_no}</code></td>
-        <td>${s.name}</td>
-        <td><span class="badge badge-gray">Sem ${s.semester}</span></td>
-        <td><span class="badge ${secColor[s.section] || 'badge-gray'}">${s.section}</span></td>
-        <td>
-          <button class="btn btn-sm btn-danger" onclick="deleteStudent('${s.reg_no}','${s.name}')">
-            <svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-            Delete
-          </button>
-        </td>
-      </tr>`).join('');
-  }
+let curM='',curP='';
+function switchTab(t,el){document.getElementById('api-try').style.display=t==='try'?'block':'none';document.getElementById('api-schema').style.display=t==='schema'?'block':'none';document.querySelectorAll('.tab').forEach((e,i)=>e.classList.toggle('active',(i===0&&t==='try')||(i===1&&t==='schema')));}
+function selEp(m,p,body){
+  curM=m;curP=p;
+  document.querySelectorAll('.ep-row').forEach(r=>r.classList.remove('sel'));
+  event.currentTarget.classList.add('sel');
+  document.getElementById('ep-det').style.display='block';
+  const b=document.getElementById('ep-bdg');b.textContent=m==='DELETE'?'DEL':m;b.className='mth '+(m==='GET'?'mg':m==='POST'?'mp':'md');
+  document.getElementById('ep-url').value=base()+p;
+  document.getElementById('ep-bw').style.display=m==='POST'?'block':'none';
+  if(body){try{document.getElementById('ep-body').value=JSON.stringify(JSON.parse(body),null,2);}catch{}}
+  document.getElementById('ep-resp').textContent='Click Send to execute.';document.getElementById('ep-resp').className='resp';document.getElementById('rmeta').textContent='';
+}
+function closeEp(){document.getElementById('ep-det').style.display='none';document.querySelectorAll('.ep-row').forEach(r=>r.classList.remove('sel'));}
+async function runEp(){
+  const btn=document.getElementById('run-btn'),resp=document.getElementById('ep-resp'),meta=document.getElementById('rmeta'),url=document.getElementById('ep-url').value.trim();
+  btn.disabled=true;resp.className='resp';resp.textContent='Sending…';meta.textContent='';
+  const opts={method:curM,signal:AbortSignal.timeout(8000)};
+  if(curM==='POST'){const raw=document.getElementById('ep-body').value;try{JSON.parse(raw);}catch{resp.textContent='✗ Invalid JSON.';resp.className='resp err';btn.disabled=false;return;}opts.headers={'Content-Type':'application/json'};opts.body=raw;}
+  const t0=Date.now();
+  try{const r=await fetch(url,opts);const ms=Date.now()-t0;const txt=await r.text();let pretty=txt;try{pretty=JSON.stringify(JSON.parse(txt),null,2);}catch{}resp.textContent=pretty;resp.className='resp '+(r.ok?'ok':'err');meta.textContent=r.status+' · '+ms+'ms';meta.style.color=r.ok?'var(--green)':'var(--red)';}
+  catch(e){resp.textContent='✗ '+(e.name==='TimeoutError'?'Timed out.':'Network error — '+e.message);resp.className='resp err';}
+  btn.disabled=false;
+}
 
-  function filterTable() {
-    const q = document.getElementById('search-inp').value.toLowerCase();
-    renderTable(allStudents.filter(s =>
-      s.name.toLowerCase().includes(q) || s.reg_no.toLowerCase().includes(q)
-    ));
-  }
+const FL=[
+  {c:'linfo',m:'INFO:     Uvicorn running on http://0.0.0.0:8000'},
+  {c:'lok',  m:'INFO:     Application startup complete.'},
+  {c:'lok',  m:'INFO:     Connected to PostgreSQL: devops_db'},
+  {c:'lok',  m:'INFO:     GET /health HTTP/1.1  200 OK  1ms'},
+  {c:'lok',  m:'INFO:     GET /students HTTP/1.1  200 OK  4ms'},
+  {c:'lok',  m:'INFO:     POST /students HTTP/1.1  201 Created  7ms'},
+  {c:'lwarn',m:'WARNING:  POST /students HTTP/1.1  409 Conflict — reg_no exists'},
+  {c:'lok',  m:'INFO:     DELETE /students/2312099 HTTP/1.1  200 OK  3ms'},
+  {c:'lok',  m:'INFO:     GET /students/2312274 HTTP/1.1  200 OK  2ms'},
+];
+async function refreshLogs(){
+  const box=document.getElementById('log-box'),btn=document.getElementById('log-btn');
+  btn.disabled=true;box.innerHTML='<div style="color:var(--t3)"><span class="spin"></span> Fetching…</div>';
+  try{const r=await fetch(base()+'/logs',{signal:AbortSignal.timeout(4000)});if(r.ok){const d=await r.json();box.innerHTML=d.logs.map(l=>`<div class="log-line"><span class="log-ts">${l.ts||''}</span><span class="${l.level==='ERROR'?'lerr':l.level==='WARNING'?'lwarn':'lok'}">${l.msg}</span></div>`).join('');btn.disabled=false;return;}}catch{}
+  const now=new Date();
+  setTimeout(()=>{box.innerHTML=FL.map((l,i)=>{const d=new Date(now-(FL.length-i)*3500);const ts=d.toISOString().replace('T',' ').slice(0,19);return`<div class="log-line" style="animation-delay:${i*0.04}s"><span class="log-ts">${ts}</span><span class="${l.c}">${l.m}</span></div>`;}).join('');btn.disabled=false;},600);
+}
 
-  function showAlert(id, msg, type) {
-    const el = document.getElementById(id);
-    el.textContent = msg;
-    el.className = 'alert alert-' + type;
-    el.style.display = 'block';
-    setTimeout(() => { el.style.display = 'none'; }, 4000);
-  }
-
-  async function addStudent() {
-    const reg  = document.getElementById('f-reg').value.trim();
-    const name = document.getElementById('f-name').value.trim();
-    const sem  = parseInt(document.getElementById('f-sem').value);
-    const sec  = document.getElementById('f-sec').value;
-
-    if (!reg || !name || !sem || !sec) {
-      showAlert('add-alert', 'All fields are required.', 'error'); return;
-    }
-
-    const btn = document.getElementById('add-btn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span> Saving…';
-
-    try {
-      const r = await fetch(getBase() + '/students', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reg_no: reg, name, semester: sem, section: sec }),
-        signal: AbortSignal.timeout(6000)
-      });
-      if (r.status === 201 || r.ok) {
-        showAlert('add-alert', `Student "${name}" added successfully.`, 'success');
-        document.getElementById('f-reg').value = '';
-        document.getElementById('f-name').value = '';
-        document.getElementById('f-sem').value = '';
-        document.getElementById('f-sec').value = '';
-        loadStudents();
-      } else {
-        const d = await r.json().catch(() => ({}));
-        showAlert('add-alert', d.detail || 'Error: HTTP ' + r.status, 'error');
-      }
-    } catch (e) {
-      showAlert('add-alert', 'Could not reach API. Is the server running?', 'error');
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add student';
-    }
-  }
-
-  async function deleteStudent(reg, name) {
-    if (!confirm(`Delete "${name}" (${reg})?`)) return;
-    try {
-      const r = await fetch(getBase() + '/students/' + reg, {
-        method: 'DELETE', signal: AbortSignal.timeout(6000)
-      });
-      if (r.ok) { loadStudents(); }
-      else {
-        const d = await r.json().catch(() => ({}));
-        alert('Delete failed: ' + (d.detail || r.status));
-      }
-    } catch { alert('Could not reach API.'); }
-  }
-
-  // ── API Explorer ─────────────────────────────────────────────────
-  let curMethod = '', curPath = '';
-
-  function switchApiTab(t, el) {
-    document.getElementById('api-try').style.display    = t === 'try'    ? 'block' : 'none';
-    document.getElementById('api-schema').style.display = t === 'schema' ? 'block' : 'none';
-    document.querySelectorAll('.tab').forEach((e, i) => {
-      e.classList.toggle('active', (i === 0 && t === 'try') || (i === 1 && t === 'schema'));
-    });
-  }
-
-  function selectEp(method, path, body) {
-    curMethod = method; curPath = path;
-    document.querySelectorAll('.endpoint-row').forEach(r => r.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
-    document.getElementById('ep-detail').style.display = 'block';
-
-    const badge = document.getElementById('ep-badge');
-    badge.textContent = method === 'DELETE' ? 'DEL' : method;
-    badge.className = 'method-tag ' + (method === 'GET' ? 'm-get' : method === 'POST' ? 'm-post' : 'm-delete');
-
-    document.getElementById('ep-url-field').value = getBase() + path;
-
-    const bw = document.getElementById('ep-body-wrap');
-    bw.style.display = method === 'POST' ? 'block' : 'none';
-    if (body) {
-      try { document.getElementById('ep-body').value = JSON.stringify(JSON.parse(body), null, 2); }
-      catch { document.getElementById('ep-body').value = body; }
-    }
-    document.getElementById('ep-resp').textContent = 'Click Send to execute this request.';
-    document.getElementById('ep-resp').className = 'resp-box';
-    document.getElementById('resp-meta').textContent = '';
-  }
-
-  function closeEp() {
-    document.getElementById('ep-detail').style.display = 'none';
-    document.querySelectorAll('.endpoint-row').forEach(r => r.classList.remove('selected'));
-  }
-
-  async function runEp() {
-    const btn  = document.getElementById('run-btn');
-    const resp = document.getElementById('ep-resp');
-    const meta = document.getElementById('resp-meta');
-    const url  = document.getElementById('ep-url-field').value.trim();
-
-    btn.disabled = true;
-    resp.className = 'resp-box';
-    resp.textContent = 'Sending…';
-    meta.textContent = '';
-
-    const opts = { method: curMethod, signal: AbortSignal.timeout(8000) };
-    if (curMethod === 'POST') {
-      const raw = document.getElementById('ep-body').value;
-      try { JSON.parse(raw); } catch { resp.textContent = '✗ Invalid JSON in request body.'; resp.classList.add('resp-err'); btn.disabled = false; return; }
-      opts.headers = { 'Content-Type': 'application/json' };
-      opts.body = raw;
-    }
-
-    const t0 = Date.now();
-    try {
-      const r = await fetch(url, opts);
-      const ms = Date.now() - t0;
-      const text = await r.text();
-      let pretty = text;
-      try { pretty = JSON.stringify(JSON.parse(text), null, 2); } catch {}
-      resp.textContent = pretty;
-      resp.className = 'resp-box ' + (r.ok ? 'resp-ok' : 'resp-err');
-      meta.textContent = r.status + ' · ' + ms + 'ms';
-    } catch (e) {
-      resp.textContent = '✗ ' + (e.name === 'TimeoutError' ? 'Request timed out (8s).' : 'Network error — ' + e.message);
-      resp.className = 'resp-box resp-err';
-    } finally {
-      btn.disabled = false;
-    }
-  }
-
-  // ── Logs ─────────────────────────────────────────────────────────
-  const fakeLogs = [
-    { cls: 'log-info', ts: '', msg: 'INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)' },
-    { cls: 'log-ok',   ts: '', msg: 'INFO:     Application startup complete.' },
-    { cls: 'log-ok',   ts: '', msg: 'INFO:     Connected to PostgreSQL: devops_db' },
-    { cls: 'log-ok',   ts: '', msg: 'INFO:     GET /health HTTP/1.1  200 OK  1ms' },
-    { cls: 'log-ok',   ts: '', msg: 'INFO:     GET /students HTTP/1.1  200 OK  4ms' },
-    { cls: 'log-ok',   ts: '', msg: 'INFO:     POST /students HTTP/1.1  201 Created  7ms' },
-    { cls: 'log-warn', ts: '', msg: 'WARNING:  POST /students HTTP/1.1  409 Conflict — reg_no already exists' },
-    { cls: 'log-ok',   ts: '', msg: 'INFO:     DELETE /students/2312099 HTTP/1.1  200 OK  3ms' },
-    { cls: 'log-ok',   ts: '', msg: 'INFO:     GET /students/2312274 HTTP/1.1  200 OK  2ms' },
-  ];
-
-  async function refreshLogs() {
-    const box = document.getElementById('log-box');
-    const btn = document.getElementById('log-refresh-btn');
-    btn.disabled = true;
-    box.innerHTML = '<div style="color:var(--text-3)"><span class="spinner"></span> Fetching logs…</div>';
-
-    // Try real /logs endpoint; fall back to simulated
-    try {
-      const r = await fetch(getBase() + '/logs', { signal: AbortSignal.timeout(4000) });
-      if (r.ok) {
-        const data = await r.json();
-        box.innerHTML = data.logs.map(l =>
-          `<div><span class="log-ts">${l.ts || ''}</span><span class="${l.level === 'ERROR' ? 'log-err' : l.level === 'WARNING' ? 'log-warn' : 'log-ok'}">${l.msg}</span></div>`
-        ).join('');
-        return;
-      }
-    } catch { /* fall through */ }
-
-    // Simulated logs with real-ish timestamps
-    const now = new Date();
-    setTimeout(() => {
-      box.innerHTML = fakeLogs.map((l, i) => {
-        const d = new Date(now - (fakeLogs.length - i) * 3500);
-        const ts = d.toISOString().replace('T', ' ').slice(0, 19);
-        return `<div><span class="log-ts">${ts}</span><span class="${l.cls}">${l.msg}</span></div>`;
-      }).join('');
-    }, 500);
-
-    btn.disabled = false;
-  }
-
-  // ── Init ─────────────────────────────────────────────────────────
-  loadStudents();
-  document.getElementById('api-base-inp') && (document.getElementById('api-base-inp').value = API_BASE);
+loadStudents();
+document.getElementById('api-base').value=API_BASE;
 </script>
 </body>
 </html>
